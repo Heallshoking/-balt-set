@@ -9,11 +9,11 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 const _playfair = Playfair_Display({ subsets: ["latin", "cyrillic"] })
 
 export const metadata: Metadata = {
-  title: "BALT-SET — Виниловые пластинки под заказ в Калининграде",
+  title: "BALT-SET — Виниловые пластинки: бесплатный предзаказ в Калининграде",
   description: "Заказывайте виниловые пластинки со всего мира. Бесплатный предзаказ, доставка из Москвы в Калининград. balt-set.ru",
   metadataBase: new URL("https://balt-set.ru"),
   openGraph: {
-    title: "BALT-SET — Виниловые пластинки под заказ",
+    title: "BALT-SET — Виниловые пластинки: бесплатный предзаказ",
     description: "Заказывайте виниловые пластинки со всего мира. Бесплатный предзаказ.",
     url: "https://balt-set.ru",
     siteName: "BALT-SET",
