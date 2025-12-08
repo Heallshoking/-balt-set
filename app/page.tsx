@@ -401,8 +401,17 @@ export default function VinylCatalog() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-80 overflow-y-auto">
-                <SheetHeader>
-                  <SheetTitle className="text-2xl font-bold text-primary">Каталог</SheetTitle>
+                <SheetHeader className="border-b pb-4 mb-6">
+                  <Link href="/" onClick={() => setIsMenuOpen(false)} className="flex flex-col items-center gap-3 hover:opacity-80 transition-opacity">
+                    <div className="flex items-center gap-1">
+                      <Disc3 className="h-8 w-8 text-primary" />
+                      <Disc3 className="h-8 w-8 text-primary -ml-4 opacity-50" />
+                    </div>
+                    <div className="text-center">
+                      <SheetTitle className="text-2xl font-bold text-primary">BALT-SET</SheetTitle>
+                      <p className="text-xs text-muted-foreground mt-1">Виниловые пластинки в Калининграде</p>
+                    </div>
+                  </Link>
                 </SheetHeader>
 
                 <div className="mt-6 space-y-6">
@@ -560,10 +569,10 @@ export default function VinylCatalog() {
             
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground text-balance">
               Виниловые пластинки
-              <span className="block text-primary">под заказ</span>
+              <span className="block text-primary">бесплатный предзаказ</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Найдём любую пластинку и привезём из Москвы. Бесплатный предзаказ.
+              Найдём любую пластинку и привезём из Москвы.
             </p>
 
             <div className="relative max-w-xl mx-auto">
