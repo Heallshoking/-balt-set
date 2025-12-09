@@ -77,11 +77,11 @@ export default function HomePage() {
             country: r.country || "Россия",
             price: r.price,
             status:
-              r.status === "🟢 Доступна"
+              r.status === "🟢 Доступна" || r.status === "available"
                 ? "available"
-                : r.status === "🟡 Предзаказ"
+                : r.status === "🟡 Предзаказ" || r.status === "preorder"
                   ? "preorder"
-                  : r.status === "🔴 Продана"
+                  : r.status === "🔴 Продана" || r.status === "sold"
                     ? "sold"
                     : "available",
             image: r.photo_url || r.image || "/placeholder.svg",
@@ -103,6 +103,10 @@ export default function HomePage() {
     }
 
     fetchRecords()
+    
+    // Auto-refresh every 2 minutes to ensure data is up to date
+    const interval = setInterval(fetchRecords, 120000)
+    return () => clearInterval(interval)
   }, [])
 
   const createNewPreorder = async (query: string) => {
