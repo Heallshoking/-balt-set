@@ -38,7 +38,7 @@ export default function HomePage() {
 
   const filteredRecords = searchQuery
     ? records.filter(
-        (r) =>
+        (r: VinylRecord) =>
           r.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.artist.toLowerCase().includes(searchQuery.toLowerCase()) ||
           r.genre?.toLowerCase().includes(searchQuery.toLowerCase()),
@@ -47,8 +47,8 @@ export default function HomePage() {
 
   // Популярные пластинки с наибольшим количеством предзаказов
   const popularPreorders = records
-    .filter((r) => r.status === "preorder" && (r.preorder_count || 0) > 0)
-    .sort((a, b) => (b.preorder_count || 0) - (a.preorder_count || 0))
+    .filter((r: VinylRecord) => r.status === "preorder" && (r.preorder_count || 0) > 0)
+    .sort((a: VinylRecord, b: VinylRecord) => (b.preorder_count || 0) - (a.preorder_count || 0))
     .slice(0, 10)
 
   useEffect(() => {
@@ -297,6 +297,36 @@ export default function HomePage() {
               </Badge>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Available Vinyl Records Showcase */}
+      <section className="py-8 bg-gradient-to-br from-slate-50 to-white border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center">
+              <Disc3 className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h2 className="text-2xl font-bold text-foreground">Пластинки в наличии</h2>
+              <p className="text-sm text-muted-foreground">Готовы к покупке и доставке</p>
+            </div>
+          </div>
+          
+          {records.filter((r: VinylRecord) => r.status === "available").length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              {records
+                .filter((r: VinylRecord) => r.status === "available")
+                .slice(0, 10)
+                .map((record: VinylRecord) => (
+                  <VinylCard key={record.id} record={record} compact />
+                ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-border text-center">
+              <p className="text-muted-foreground">На данный момент нет доступных пластинок</p>
+            </div>
+          )}
         </div>
       </section>
 
