@@ -250,6 +250,31 @@ export default function HomePage() {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-14 pr-6 h-14 text-base bg-white border-2 rounded-xl shadow-lg"
               />
+              
+              {/* Smart Preorder Button - appears when search has no results */}
+              {searchQuery && !loading && filteredRecords.length === 0 && (
+                <div className="mt-4 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                      <Sparkles className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-base font-bold text-blue-900 mb-1">Пластинка не найдена</h3>
+                      <p className="text-xs text-blue-700 mb-3">
+                        Создайте предзаказ и мы уведомим вас о поступлении!
+                      </p>
+                      <Button
+                        onClick={() => createNewPreorder(searchQuery)}
+                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md"
+                        size="sm"
+                        disabled={isCreatingPreorder}
+                      >
+                        {isCreatingPreorder ? "⚠️ Создаём..." : "✨ Добавить и уведомить о поступлении"}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -388,7 +413,7 @@ export default function HomePage() {
             </div>
           ) : searchQuery ? (
             <div>
-              {filteredRecords.length > 0 ? (
+              {filteredRecords.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-border mb-6">
                   <p className="text-lg font-semibold text-foreground mb-4">
                     Найдено {filteredRecords.length} {filteredRecords.length === 1 ? 'пластинка' : filteredRecords.length < 5 ? 'пластинки' : 'пластинок'} по запросу "{searchQuery}"
@@ -397,48 +422,6 @@ export default function HomePage() {
                     {filteredRecords.map((record) => (
                       <VinylCard key={record.id} record={record} compact />
                     ))}
-                  </div>
-                  
-                  {/* Not Found Notice inside results */}
-                  <div className="mt-8 p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 shadow-sm">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
-                        <Sparkles className="h-6 w-6 text-white" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-blue-900 mb-2">Не нашли нужную пластинку?</h3>
-                        <p className="text-sm text-blue-700 mb-4">
-                          AI автоматически создаст карточку предзаказа, и мы уведомим вас о поступлении!
-                        </p>
-                        <Button
-                          onClick={() => createNewPreorder(searchQuery)}
-                          className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md"
-                          disabled={isCreatingPreorder}
-                        >
-                          {isCreatingPreorder ? "⚙️ Создаём..." : "✨ Создать предзаказ"}
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                <div className="bg-white rounded-2xl p-8 shadow-sm border border-border text-center">
-                  <div className="max-w-md mx-auto">
-                    <div className="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mx-auto mb-4">
-                      <Sparkles className="h-8 w-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">Пластинка не найдена в каталоге</h3>
-                    <p className="text-sm text-muted-foreground mb-6">
-                      AI автоматически создаст карточку предзаказа и вы сможете получить уведомление о поступлении!
-                    </p>
-                    <Button
-                      onClick={() => createNewPreorder(searchQuery)}
-                      className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg"
-                      size="lg"
-                      disabled={isCreatingPreorder}
-                    >
-                      {isCreatingPreorder ? "⚙️ Создаём карточку..." : "✨ Добавить и уведомить о поступлении"}
-                    </Button>
                   </div>
                 </div>
               )}
