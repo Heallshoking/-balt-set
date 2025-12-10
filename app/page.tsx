@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Search, Disc3, Menu, Sparkles, TrendingUp } from "lucide-react"
+import { Search, Disc3, Menu, Sparkles, TrendingUp, MessageCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { VinylCard } from "@/components/vinyl-card"
@@ -134,7 +134,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b border-border bg-white/80 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
             {/* Burger Menu */}
             <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
               <SheetTrigger asChild>
@@ -163,7 +163,7 @@ export default function HomePage() {
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
                       <Input
                         type="search"
-                        placeholder="Поиск..."
+                        placeholder=""
                         value={searchQuery}
                         onChange={(e) => {
                           setSearchQuery(e.target.value)
@@ -248,15 +248,35 @@ export default function HomePage() {
               <span className="text-base sm:text-lg font-bold text-primary hidden sm:inline">BALT-SET</span>
             </Link>
 
-            <div className="flex items-center gap-2 sm:gap-3">
+            {/* Search Bar in Header */}
+            <div className="flex-1 max-w-2xl">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                  type="search"
+                  placeholder=""
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-10 pr-4 h-10 text-sm bg-white/90 backdrop-blur-sm border rounded-full shadow-sm w-full"
+                />
+              </div>
+            </div>
+
+            {/* Telegram Button */}
+            <a
+              href="https://t.me/konigkomfort"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0"
+            >
               <Button
                 variant="ghost"
-                size="sm"
-                className="text-xs sm:text-sm hover:text-primary hidden sm:flex"
+                size="icon"
+                className="rounded-full hover:bg-primary/10"
               >
-                Контакты
+                <MessageCircle className="h-5 w-5 text-primary" />
               </Button>
-            </div>
+            </a>
           </div>
         </div>
       </header>
@@ -281,15 +301,30 @@ export default function HomePage() {
               Покупайте винил с доставкой до двери.
             </p>
 
-            {/* Call to Action Button */}
-            <div className="relative max-w-xl mx-auto">
-              <Button
-                onClick={() => setIsMenuOpen(true)}
-                className="w-full h-14 text-base bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-lg hover:shadow-xl transition-all"
+            {/* Call to Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3 max-w-xl mx-auto">
+              <Link href="/upcoming" className="flex-1">
+                <Button
+                  className="w-full h-14 text-base bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-lg hover:shadow-xl transition-all"
+                >
+                  <TrendingUp className="h-5 w-5 mr-2" />
+                  Ближайшие поставки
+                </Button>
+              </Link>
+              <a
+                href="https://t.me/konigkomfort"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1"
               >
-                <TrendingUp className="h-5 w-5 mr-2" />
-                Ближайшие поставки
-              </Button>
+                <Button
+                  variant="outline"
+                  className="w-full h-14 text-base border-2 border-primary text-primary hover:bg-primary hover:text-white shadow-md hover:shadow-lg transition-all"
+                >
+                  <MessageCircle className="h-5 w-5 mr-2" />
+                  Консультация
+                </Button>
+              </a>
             </div>
           </div>
         </div>
