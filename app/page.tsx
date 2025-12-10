@@ -157,6 +157,46 @@ export default function HomePage() {
                 </SheetHeader>
 
                 <div className="space-y-6">
+                  {/* Search in Mobile Menu */}
+                  <div className="space-y-3">
+                    <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground z-10" />
+                      <Input
+                        type="search"
+                        placeholder="Поиск..."
+                        value={searchQuery}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value)
+                          if (e.target.value) {
+                            setIsMenuOpen(false)
+                          }
+                        }}
+                        className="pl-10 pr-4 h-11 text-sm bg-white border-2 rounded-lg shadow-sm"
+                      />
+                    </div>
+                    
+                    {/* Not Found in Menu */}
+                    {searchQuery && !loading && filteredRecords.length === 0 && (
+                      <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200">
+                        <h3 className="text-sm font-bold text-blue-900 mb-1">Пластинка не найдена</h3>
+                        <p className="text-xs text-blue-700 mb-3">
+                          Создайте предзаказ и мы уведомим вас о поступлении!
+                        </p>
+                        <Button
+                          onClick={() => {
+                            createNewPreorder(searchQuery)
+                            setIsMenuOpen(false)
+                          }}
+                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+                          size="sm"
+                          disabled={isCreatingPreorder}
+                        >
+                          {isCreatingPreorder ? "⚠️ Создаём..." : "✨ Добавить и уведомить"}
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  
                   {/* Categories */}
                   <div className="space-y-2">
                     <h3 className="font-semibold text-sm text-muted-foreground uppercase tracking-wider mb-3">Жанры</h3>
@@ -241,40 +281,15 @@ export default function HomePage() {
               Покупайте винил с доставкой до двери.
             </p>
 
+            {/* Call to Action Button */}
             <div className="relative max-w-xl mx-auto">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground z-10" />
-              <Input
-                type="search"
-                placeholder="Название или исполнитель..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-14 pr-6 h-14 text-base bg-white border-2 rounded-xl shadow-lg"
-              />
-              
-              {/* Smart Preorder Button - appears when search has no results */}
-              {searchQuery && !loading && filteredRecords.length === 0 && (
-                <div className="mt-4 p-4 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border-2 border-blue-200 shadow-md animate-in fade-in slide-in-from-top-2 duration-300">
-                  <div className="flex items-start gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
-                      <Sparkles className="h-5 w-5 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="text-base font-bold text-blue-900 mb-1">Пластинка не найдена</h3>
-                      <p className="text-xs text-blue-700 mb-3">
-                        Создайте предзаказ и мы уведомим вас о поступлении!
-                      </p>
-                      <Button
-                        onClick={() => createNewPreorder(searchQuery)}
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-md"
-                        size="sm"
-                        disabled={isCreatingPreorder}
-                      >
-                        {isCreatingPreorder ? "⚠️ Создаём..." : "✨ Добавить и уведомить о поступлении"}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
+              <Button
+                onClick={() => setIsMenuOpen(true)}
+                className="w-full h-14 text-base bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white shadow-lg hover:shadow-xl transition-all"
+              >
+                <TrendingUp className="h-5 w-5 mr-2" />
+                Ближайшие поставки
+              </Button>
             </div>
           </div>
         </div>
