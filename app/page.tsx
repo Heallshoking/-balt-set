@@ -35,6 +35,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("")
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isCreatingPreorder, setIsCreatingPreorder] = useState(false)
+  const [selectedGenre, setSelectedGenre] = useState<string | null>(null)
 
   const filteredRecords = searchQuery
     ? records.filter(
@@ -233,11 +234,11 @@ export default function HomePage() {
             </div>
             
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground text-balance">
-              Виниловые пластинки
+              Пластинки с доставкой
               <span className="block text-primary">бесплатный предзаказ</span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-pretty">
-              Найдём любую пластинку и привезём из Москвы.
+              Покупайте винил с доставкой до двери.
             </p>
 
             <div className="relative max-w-xl mx-auto">
@@ -313,24 +314,67 @@ export default function HomePage() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-foreground">Пластинки в наличии</h2>
-              <p className="text-sm text-muted-foreground">Готовы к покупке и доставке</p>
+              <p className="text-sm text-muted-foreground">Готовы к доставке по Калининграду</p>
             </div>
           </div>
           
-          {records.filter((r: VinylRecord) => r.status === "available").length > 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-              {records
-                .filter((r: VinylRecord) => r.status === "available")
-                .slice(0, 10)
-                .map((record: VinylRecord) => (
-                  <VinylCard key={record.id} record={record} compact />
-                ))}
+          {/* Category Navigation */}
+          <div className="mb-6 overflow-x-auto">
+            <div className="flex gap-2 pb-2">
+              <button
+                onClick={() => setSelectedGenre(null)}
+                className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  selectedGenre === null
+                    ? "bg-emerald-500 text-white shadow-md"
+                    : "bg-white text-gray-700 border border-gray-200 hover:border-emerald-300"
+                }`}
+              >
+                Все жанры
+              </button>
+              {["Рок", "Джаз", "Классика", "Электроника", "Поп", "СССР"].map((genre) => (
+                <button
+                  key={genre}
+                  onClick={() => setSelectedGenre(genre)}
+                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                    selectedGenre === genre
+                      ? "bg-emerald-500 text-white shadow-md"
+                      : "bg-white text-gray-700 border border-gray-200 hover:border-emerald-300"
+                  }`}
+                >
+                  {genre}
+                </button>
+              ))}
             </div>
-          ) : (
-            <div className="bg-white rounded-xl p-6 shadow-sm border border-border text-center">
-              <p className="text-muted-foreground">На данный момент нет доступных пластинок</p>
-            </div>
-          )}
+          </div>
+          
+          {/* Records Grid */}
+          {(() => {
+            const availableRecords = records.filter((r: VinylRecord) => r.status === "available")
+            const filteredRecords = selectedGenre
+              ? availableRecords.filter((r: VinylRecord) => r.genre === selectedGenre)
+              : availableRecords
+
+            return filteredRecords.length > 0 ? (
+              <div>
+                <div className="mb-4 text-sm text-muted-foreground">
+                  Показано {filteredRecords.length} {filteredRecords.length === 1 ? 'пластинка' : filteredRecords.length < 5 ? 'пластинки' : 'пластинок'}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                  {filteredRecords.map((record: VinylRecord) => (
+                    <VinylCard key={record.id} record={record} compact />
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl p-8 shadow-sm border border-border text-center">
+                <p className="text-muted-foreground">
+                  {selectedGenre
+                    ? `В категории "${selectedGenre}" пока нет доступных пластинок`
+                    : "На данный момент нет доступных пластинок"}
+                </p>
+              </div>
+            )
+          })()}
         </div>
       </section>
 
